@@ -6,8 +6,8 @@ import mlflow
 from dotenv import load_dotenv
 from pyspark.sql import SparkSession
 
-from marvel_characters.config import ProjectConfig, Tags
-from marvel_characters.models.basic_model import BasicModel
+from course_characters.config import ProjectConfig, Tags
+from course_characters.models.basic_model import BasicModel
 import os
 
 
@@ -26,7 +26,7 @@ if not is_databricks():
     mlflow.set_registry_uri(f"databricks-uc://{profile}")
 
 
-config = ProjectConfig.from_yaml(config_path="../project_config_marvel.yml", env="dev")
+config = ProjectConfig.from_yaml(config_path="../project_config_integration.yml", env="dev")
 spark = SparkSession.builder.getOrCreate()
 tags = Tags(**{"git_sha": "abcd12345", "branch": "main"})
 
@@ -62,7 +62,7 @@ logged_model.metrics
 
 # COMMAND ----------
 run_id = mlflow.search_runs(
-    experiment_names=["/Shared/marvel-characters-basic"], filter_string="tags.git_sha='abcd12345'"
+    experiment_names=["/Shared/course-characters-basic"], filter_string="tags.git_sha='abcd12345'"
 ).run_id[0]
 
 model = mlflow.sklearn.load_model(f"runs:/{run_id}/lightgbm-pipeline-model")

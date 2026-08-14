@@ -17,14 +17,14 @@ from pyspark.sql import SparkSession
 from course_characters.config import ProjectConfig
 from course_characters.data_processor import DataProcessor
 
-config = ProjectConfig.from_yaml(config_path="../project_config_marvel.yml", env="dev")
+config = ProjectConfig.from_yaml(config_path="../project_config_integration.yml", env="dev")
 
 logger.info("Configuration loaded:")
 logger.info(yaml.dump(config, default_flow_style=False))
 
 # COMMAND ----------
 
-# Load the Marvel characters dataset
+# Load the course characters dataset
 spark = SparkSession.builder.getOrCreate()
 
 filepath = "../data/course_characters_dataset.csv"
@@ -39,7 +39,7 @@ logger.info(f"Target column '{config.target}' distribution:")
 logger.info(df[config.target].value_counts())
 
 # COMMAND ----------
-# Load the Marvel characters dataset
+# Load the course characters dataset
 
 data_processor = DataProcessor(df, config, spark)
 

@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %pip install marvelousmlops-marvel-characters-1.0.1-py3-none-any.whl
+# MAGIC %pip install dist/course_characters-*.whl
 
 # COMMAND ----------
 
@@ -22,9 +22,9 @@ from dotenv import load_dotenv
 from mlflow.models import infer_signature
 from pyspark.sql import SparkSession
 
-from marvel_characters.config import ProjectConfig, Tags
-from marvel_characters.models.basic_model import BasicModel
-from marvel_characters.utils import is_databricks
+from course_characters.config import ProjectConfig, Tags
+from course_characters.models.basic_model import BasicModel
+from course_characters.utils import is_databricks
 
 # COMMAND ----------
 
@@ -42,7 +42,7 @@ if not is_databricks():
     mlflow.set_tracking_uri(f"databricks://{profile}")
     mlflow.set_registry_uri(f"databricks-uc://{profile}")
 
-config = ProjectConfig.from_yaml(config_path="../project_config_marvel.yml", env="dev")
+config = ProjectConfig.from_yaml(config_path="../project_config_integration.yml", env="dev")
 # Define tags (customize as needed)
 tags = Tags(git_sha="dev", branch="ab-testing")
 

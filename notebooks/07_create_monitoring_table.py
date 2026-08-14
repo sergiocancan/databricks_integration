@@ -1,5 +1,5 @@
 # Databricks notebook source
-# %pip install marvel_characters-0.1.0-py3-none-any.whl
+# MAGIC %pip install dist/course_characters-*.whl
 # COMMAND ----------
 
 # MAGIC %md
@@ -12,13 +12,13 @@ from pyspark.sql import SparkSession
 import os
 from pyspark.dbutils import DBUtils
 
-from marvel_characters.config import ProjectConfig
-from marvel_characters.utils import is_databricks
+from course_characters.config import ProjectConfig
+from course_characters.utils import is_databricks
 
 spark = SparkSession.builder.getOrCreate()
 
 # Load configuration
-config = ProjectConfig.from_yaml(config_path="../project_config_marvel.yml", env="dev")
+config = ProjectConfig.from_yaml(config_path="../project_config_integration.yml", env="dev")
 
 test_set = spark.table(f"{config.catalog_name}.{config.schema_name}.test_set") \
                         .withColumn("Id", col("Id").cast("string")) \
@@ -105,13 +105,13 @@ for i in range(len(dataframe_records)):
 from databricks.connect import DatabricksSession
 from databricks.sdk import WorkspaceClient
 
-from marvel_characters.config import ProjectConfig
-from marvel_characters.monitoring import create_or_refresh_monitoring
+from course_characters.config import ProjectConfig
+from course_characters.monitoring import create_or_refresh_monitoring
 
 spark = DatabricksSession.builder.getOrCreate()
 workspace = WorkspaceClient()
 
 # Load configuration
-config = ProjectConfig.from_yaml(config_path="../project_config_marvel.yml", env="dev")
+config = ProjectConfig.from_yaml(config_path="../project_config_integration.yml", env="dev")
 
 create_or_refresh_monitoring(config=config, spark=spark, workspace=workspace)

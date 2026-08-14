@@ -3,8 +3,8 @@
 import mlflow
 from pyspark.sql import SparkSession
 
-from marvel_characters.config import ProjectConfig, Tags
-from marvel_characters.models.custom_model import MarvelModelWrapper
+from course_characters.config import ProjectConfig, Tags
+from course_characters.models.custom_model import MarvelModelWrapper
 from importlib.metadata import version
 from dotenv import load_dotenv
 from mlflow import MlflowClient
@@ -25,7 +25,7 @@ if not is_databricks():
     mlflow.set_registry_uri(f"databricks-uc://{profile}")
 
 
-config = ProjectConfig.from_yaml(config_path="../project_config_marvel.yml", env="dev")
+config = ProjectConfig.from_yaml(config_path="../project_config_integration.yml", env="dev")
 spark = SparkSession.builder.getOrCreate()
 tags = Tags(**{"git_sha": "abcd12345", "branch": "main"})
 marvel_characters_v = version("marvel_characters")
