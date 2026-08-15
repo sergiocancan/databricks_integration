@@ -26,7 +26,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-config_path = f"{args.root_path}/files/project_config_marvel.yml"
+config_path = f"{args.root_path}/files/project_config_integration.yml"
 
 spark = SparkSession.builder.getOrCreate()
 dbutils = DBUtils(spark)

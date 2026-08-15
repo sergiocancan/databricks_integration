@@ -1,6 +1,9 @@
 prd:
   catalog_name: mlops_prd
   schema_name: course_characters
+acc:
+  catalog_name: mlops_acc
+  schema_name: course_characters
 test:
   catalog_name: mlops_test
   schema_name: course_characters

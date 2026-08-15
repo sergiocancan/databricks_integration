@@ -26,7 +26,7 @@ parser.add_argument(
 
 
 args = parser.parse_args()
-config_path = f"{args.root_path}/files/project_config_marvel.yml"
+config_path = f"{args.root_path}/files/project_config_integration.yml"
 
 config = ProjectConfig.from_yaml(config_path=config_path, env=args.env)
 
