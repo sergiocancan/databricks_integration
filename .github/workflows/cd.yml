@@ -20,15 +20,10 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
-
       - name: Install Databricks CLI
-        uses: databricks/setup-cli@49580195afe1ccb06d195764a1d0ae9fabfe2edd
+        uses: databricks/setup-cli@49580195afe1ccb06d195764a1d0ae9fabfe2edd #v0.246.0
         with:
-          version: latest
+          version: 0.246.0
 
 
       - name: Configure Databricks CLI
