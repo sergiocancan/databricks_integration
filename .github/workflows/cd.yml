@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: [test, prod]
+        environment: [test, prd]
     environment: ${{ matrix.environment }}
     permissions:
       contents: write # to push tag
