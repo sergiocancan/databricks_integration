@@ -10,10 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [test, prd]
-    environment: ${{ matrix.environment }}
+    environment: prd
     permissions:
       contents: write # to push tag
     env:
@@ -42,15 +39,18 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
       - name: Deploy to Databricks
         env:
-          DATABRICKS_BUNDLE_ENV: ${{ matrix.environment }}
+          DATABRICKS_BUNDLE_ENV: prd
         run: |
             databricks bundle deploy \
               --var="git_sha=${{ github.sha }}" \
               --var="branch=${{ github.ref_name }}"
-            if [ "${{ matrix.environment }}" = "prd" ]; then
             echo "VERSION=$(cat version.txt)"
             git tag $VERSION
             git push origin $VERSION
-            fi
