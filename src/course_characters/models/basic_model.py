@@ -16,6 +16,7 @@ from lightgbm import LGBMClassifier
 from loguru import logger
 from mlflow import MlflowClient
 from mlflow.models import infer_signature
+from mlflow.utils.rest_utils import RestException
 from pyspark.sql import SparkSession
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
@@ -172,23 +173,30 @@ class BasicModel:
         :return: True if the current model performs better, False otherwise.
         """
         client = MlflowClient()
-        latest_model_version = client.get_model_version_by_alias(name=self.model_name, alias="latest-model")
-        latest_model_uri = f"models:/{latest_model_version.model_id}"
+        try:
+            latest_model_version = client.get_model_version_by_alias(name=self.model_name, alias="latest-model")
+            latest_model_uri = f"models:/{self.model_name}@latest-model"
 
-        result = mlflow.models.evaluate(
-            latest_model_uri,
-            self.eval_data,
-            targets=self.config.target,
-            model_type="classifier",
-            evaluators=["default"],
-        )
-        metrics_old = result.metrics
-        if self.metrics["f1_score"] >= metrics_old["f1_score"]:
-            logger.info("Current model performs better. Returning True.")
+            result = mlflow.models.evaluate(
+                latest_model_uri,
+                self.eval_data,
+                targets=self.config.target,
+                model_type="classifier",
+                evaluators=["default"],
+            )
+            metrics_old = result.metrics
+            if self.metrics["f1_score"] >= metrics_old["f1_score"]:
+                logger.info("Current model performs better. Returning True.")
+                return True
+            else:
+                logger.info("Current model does not improve over latest. Returning False.")
+                return False
+        except Exception as e:
+            logger.warning(
+                f"No previous model version found with alias 'latest-model' for '{self.model_name}': {e}. "
+                "Treating current model as improved (initial registration)."
+            )
             return True
-        else:
-            logger.info("Current model does not improve over latest. Returning False.")
-            return False
 
     def register_model(self) -> None:
         """Register model in Unity Catalog."""
