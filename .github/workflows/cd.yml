@@ -26,9 +26,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Install Databricks CLI
-        uses: databricks/setup-cli@v0.2.0
-        with:
-          version: latest
+        uses: databricks/setup-cli@main
 
       - name: Configure Databricks CLI
         run: |
