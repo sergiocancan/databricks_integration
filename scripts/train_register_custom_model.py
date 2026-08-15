@@ -65,10 +65,10 @@ logger.info("Marvel model evaluation completed, model improved: %s", model_impro
 if model_improved:
     # Register the model
     basic_model.register_model()
-    marvel_characters_v = version("marvel_characters")
+    course_characters_v = version("course_characters")
 
     pyfunc_model_name = f"{config.catalog_name}.{config.schema_name}.marvel_character_model_custom"
-    code_paths=[f"{root_path}/artifacts/.internal/marvel_characters-{marvel_characters_v}-py3-none-any.whl"]
+    code_paths=[f"{root_path}/artifacts/.internal/course_characters-{course_characters_v}-py3-none-any.whl"]
 
     wrapper = MarvelModelWrapper()
     latest_version = wrapper.log_register_model(wrapped_model_uri=f"{basic_model.model_info.model_uri}",

@@ -37,7 +37,7 @@ logger.info(yaml.dump(config, default_flow_style=False))
 spark = SparkSession.builder.getOrCreate()
 
 # Example: Adjust the path and loading logic as per your Marvel dataset location
-filepath = f"{args.root_path}/files/data/marvel_characters_dataset.csv"
+filepath = f"{args.root_path}/files/data/course_characters_dataset.csv"
 
 # Load the data
 df = pd.read_csv(filepath)
